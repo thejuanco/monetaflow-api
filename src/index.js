@@ -5,6 +5,9 @@ const app = express();
 
 const port = process.env.PORT || 4000;
 
+//Middleware
+app.use(express.json());
+
 app.use('/api/auth', authRoutes)
 
 app.listen(port, () => {
