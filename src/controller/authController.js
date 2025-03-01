@@ -1,4 +1,5 @@
 import User from "../models/Users.js"
+import { generateID } from "../helpers/token.js"
 
 export const createdUser = async (req, res) => {
     try {
@@ -13,9 +14,10 @@ export const createdUser = async (req, res) => {
             name,
             lastName,
             password,
-            email
+            email,
+            token: generateID()
         })
-        res.json(user)
+        res.json({"message": "El usuario se creo correctamente"})
     } catch (error) {
         console.log(error)
     }
