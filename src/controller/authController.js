@@ -17,8 +17,8 @@ export const createdUser = async (req, res) => {
             email,
             token: generateID()
         })
-        res.json({"message": "El usuario se creo correctamente"})
+        res.status(200).json({"message": "El usuario se creo correctamente"})
     } catch (error) {
-        console.log(error)
+        return res.status(500).json({message: error.message})
     }
 }
