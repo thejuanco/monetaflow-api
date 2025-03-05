@@ -56,7 +56,20 @@ export const authenticateUser  = async (req, res) => {
             return res.status(400).json({message: "Aún no has confirmado su cuenta"})
         }
 
-
+        //Comparar la contraseña
+        if(user.validatePassword(password)){
+            res.json({
+                id: user.id,
+                name: user.name,
+                lastName: user.lastName,
+                email: user.email,
+                //token: user.token
+            })
+            console.log("usuario autenticado correctamente")
+        } else {
+            const error = new Error("La contraseña es incorrecta")
+            return res.status(403).json({message: error.message})
+        }
     } catch (error) {
         return res.status(500).json({message: error.message})
     }
