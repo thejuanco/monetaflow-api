@@ -32,7 +32,7 @@ export const confirmAccount = async (req, res) => {
             const error = new Error("El token no es valído")
             return res.status(400).json({message: error.message})
         }
-        
+
         user.token = null;
         user.confirm = true;
         await user.save()
@@ -45,17 +45,19 @@ export const confirmAccount = async (req, res) => {
 }
 
 export const authenticateUser  = async (req, res) => {
-    const { email, password } = req.body
+    try {
+        const { email, password } = req.body
 
-    if(email.trim() === "" && password.trim() === ""){
-        return res.status(400).json({message: "Los campos deben estar llenos"})
-    }
+        //Validaciones
+        const user = await User.findOne({where: {email}})
+        if(!user){
+            return res.status(404).json({message: "El usuario no existe"})
+        } else if(!user.confirm){
+            return res.status(400).json({message: "Aún no has confirmado su cuenta"})
+        }
 
-    //Validaciones
-    const user = await User.findOne({where: {email}})
-    if(!user){
-        return res.status(404).json({message: "El usuario no existe"})
-    } else if(!user.confirm){
-        return res.status(400).json({message: "El usuario no ha confirmado su cuenta"})
+
+    } catch (error) {
+        return res.status(500).json({message: error.message})
     }
 }
