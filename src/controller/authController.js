@@ -1,5 +1,6 @@
 import User from "../models/Users.js"
 import { generateID } from "../helpers/token.js"
+import generateJWT from "../helpers/generateJWT.js"
 
 export const createdUser = async (req, res) => {
     try {
@@ -63,7 +64,7 @@ export const authenticateUser  = async (req, res) => {
                 name: user.name,
                 lastName: user.lastName,
                 email: user.email,
-                //token: user.token
+                token: generateJWT(user.id)
             })
             console.log("usuario autenticado correctamente")
         } else {
