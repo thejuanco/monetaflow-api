@@ -75,3 +75,27 @@ export const authenticateUser  = async (req, res) => {
         return res.status(500).json({message: error.message})
     }
 }
+
+export const forgotPassword = async (req, res) => {
+    try{
+        const { email } = req.body
+        const user = await User.findOne({where: {email}})
+
+        if(!user){
+            const error = new Error("El usuario no existe")
+            return res.status(404).json({message: error.message})
+        }
+
+        //Generar token de recuperación
+        user.resetToken = generateID()
+        await user.save()
+
+        res.json({
+            message: "Se ha enviado un correo con instrucciones para recuperar tu contraseña",
+            email: user.email
+        })
+
+    } catch(e){
+        return res.status(500).json({message: e.message})
+    }
+}
