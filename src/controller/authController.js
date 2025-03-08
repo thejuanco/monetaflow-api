@@ -1,6 +1,7 @@
 import User from "../models/Users.js"
 import { generateID } from "../helpers/token.js"
 import generateJWT from "../helpers/generateJWT.js"
+import { sendEmail } from "../helpers/sendEmail.js"
 
 export const createdUser = async (req, res) => {
     try {
@@ -18,6 +19,16 @@ export const createdUser = async (req, res) => {
             email,
             token: generateID()
         })
+
+        //Enviando el correo
+        sendEmail({
+            token: user.token,
+            to: {
+            email: user.email,
+            name: user.name
+            }
+        })
+
         res.status(200).json({"message": "El usuario se creo correctamente"})
     } catch (error) {
         return res.status(500).json({message: error.message})
