@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt'
 import User from "../models/Users.js"
 import { generateID } from "../helpers/token.js"
 import generateJWT from "../helpers/generateJWT.js"
@@ -148,8 +149,10 @@ export const updatePassword = async (req, res) => {
 
         //Actualizar la contraseña y eliminar el token
         user.token = null
-        user.password = password
+        const salt = await bcrypt.genSalt(10)
+        user.password = await bcrypt.hash(password, salt)
         await user.save()
+
         res.json({message: "La contraseña se actualizo correctamente"})
     } catch (error) {
         return res.status(500).json({message: error.message})
