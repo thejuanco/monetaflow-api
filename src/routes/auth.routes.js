@@ -3,7 +3,9 @@ import {
   createdUser,
   confirmAccount,
   authenticateUser,
-  forgotPassword
+  forgotPassword,
+  compareToken,
+  updatePassword
 } from "../controller/authController.js";
 
 const router = Router();
@@ -13,6 +15,6 @@ router.post("/register", createdUser)
 router.get("/confirm-account/:token", confirmAccount)
 router.post("/login", authenticateUser)
 router.post("/recovery-password", forgotPassword)
-router.route("/recovery-password")
+router.route("/recovery-password/:token").get(compareToken).post(updatePassword)
 
 export default router;

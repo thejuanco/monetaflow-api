@@ -1,7 +1,7 @@
 import User from "../models/Users.js"
 import { generateID } from "../helpers/token.js"
 import generateJWT from "../helpers/generateJWT.js"
-import { sendEmail } from "../helpers/sendEmail.js"
+import { sendEmail, sendEmailPass } from "../helpers/sendEmail.js"
 
 export const createdUser = async (req, res) => {
     try {
@@ -9,7 +9,7 @@ export const createdUser = async (req, res) => {
         const {name, lastName, password, email} = req.body
 
         //Valida que se un usuario unico
-        const existUser = await User.findOne({email})
+        const existUser = await User.findOne({where: {email}})
         if (existUser) return res.status(400).send({message: 'El correo ya se encuentra registrado'})
 
         const user = await User.create({
@@ -77,7 +77,7 @@ export const authenticateUser  = async (req, res) => {
                 email: user.email,
                 token: generateJWT(user.id)
             })
-            console.log("usuario autenticado correctamente")
+            
         } else {
             const error = new Error("La contraseña es incorrecta")
             return res.status(403).json({message: error.message})
@@ -101,12 +101,26 @@ export const forgotPassword = async (req, res) => {
         user.resetToken = generateID()
         await user.save()
 
-        res.json({
-            message: "Se ha enviado un correo con instrucciones para recuperar tu contraseña",
-            email: user.email
+        //Enviando el correo
+        sendEmailPass({
+            token: user.token,
+            to: {
+            email: user.email,
+            name: user.name
+            }
         })
+
+        res.json({message: "Se ha enviado un correo con instrucciones para recuperar tu contraseña"})
 
     } catch(e){
         return res.status(500).json({message: e.message})
     }
+}
+
+export const compareToken = async (req, res) => {
+    console.log(req.params)
+}
+
+export const updatePassword = async (req, res) => {
+    console.log(req.body)
 }
