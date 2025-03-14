@@ -98,7 +98,7 @@ export const forgotPassword = async (req, res) => {
         }
 
         //Generar token de recuperación
-        user.resetToken = generateID()
+        user.token = generateID()
         await user.save()
 
         //Enviando el correo
@@ -118,9 +118,40 @@ export const forgotPassword = async (req, res) => {
 }
 
 export const compareToken = async (req, res) => {
-    console.log(req.params)
+    try {
+        const { token } = req.params
+        console.log(token)
+
+        const tokenExist = await User.findOne({where: {token}})
+
+        if(tokenExist){
+            res.json({message: "Token correcto"})
+        } else {
+            res.status(400).json({message: "Token incorrecto"})
+        }
+
+    } catch (error) {
+        return res.status(500).json({message: error.message})
+    }
 }
 
 export const updatePassword = async (req, res) => {
-    console.log(req.body)
+    try {
+        const { password } = req.body
+        const { token } = req.params
+
+        const user = await User.findOne({where: {token}})
+        if(!user){
+            const error = new Error("El usuario no existe")
+            return res.status(404).json({message: error.message})
+        }
+
+        //Actualizar la contraseña y eliminar el token
+        user.token = null
+        user.password = password
+        await user.save()
+        res.json({message: "La contraseña se actualizo correctamente"})
+    } catch (error) {
+        return res.status(500).json({message: error.message})
+    }
 }

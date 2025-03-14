@@ -45,7 +45,7 @@ export const sendEmailPass = async ({token, to}) => {
                 <h1>Restablece tu contraseña</h1>
                 <p>Hola ${name}!</p>
                 <p>Reestablece tu contraseña para que puedas seguir disfrutando de Taski</p>
-                <a href=${process.env.BACKEND_URL}:${process.env.PORT || 4000}/api/auth/recovery-password/${token}>Restablece tu contraseña</a>
+                <a href=${process.env.BACKEND_URL}/api/auth/recovery-password/${token}>Restablece tu contraseña</a>
                 <p>Este correo es automatico, por favor no respondas</p>
             </body>
         </html>`
