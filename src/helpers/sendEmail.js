@@ -22,7 +22,7 @@ export const sendEmail = async ({to,token}) => {
                 <h1>Bienvenido a Moneta Flow</h1>
                 <p>Hola ${name}!</p>
                 <p>Gracias por registrarte en Taski, por favor confirma tu correo electronico</p>
-                <a href=${process.env.BACKEND_URL}/api/auth/confirm-account/${token}>confirmar tu cuenta</a>
+                <a href=${process.env.FRONTEND_URL_DEV}/auth/confirm-account/${token}>confirmar tu cuenta</a>
                 <p>Este correo es automatico, por favor no respondas</p>
             </body>
         </html>`

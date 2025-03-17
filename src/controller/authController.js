@@ -50,7 +50,7 @@ export const confirmAccount = async (req, res) => {
         user.confirm = true;
         await user.save()
 
-        res.json({msg: "Cuenta confirmada correctamente"})
+        res.json({message: "Tu cuenta ha sido confirmada correctamente, ahora puedes iniciar sesión."})
         
     } catch (error) {
         return res.status(500).json({message: error.message})
@@ -66,7 +66,7 @@ export const authenticateUser  = async (req, res) => {
         if(!user){
             return res.status(404).json({message: "El usuario no existe"})
         } else if(!user.confirm){
-            return res.status(400).json({message: "Aún no has confirmado su cuenta"})
+            return res.status(400).json({message: "Aún no has confirmado tu cuenta"})
         }
 
         //Comparar la contraseña
