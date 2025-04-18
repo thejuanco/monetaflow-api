@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'
 import authRoutes from './routes/auth.routes.js'
 import db from './config/db.js'
 
@@ -9,8 +10,22 @@ const port = process.env.PORT || 4000;
 
 //Middleware
 app.use(express.json());
+// app.use(cors())
 
-app.use('/api/auth', authRoutes)
+// Configuración de CORS para rutas específicas
+const whiteList = ['http://localhost:5173']
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (whiteList.indexOf(origin) !== -1 || !origin) {
+            callback(null, true)
+            console.log("CORS habilitado")
+        } else {
+            callback(new Error('Error de CORS'))
+        }
+    }
+}
+
+app.use('/api/auth', cors(corsOptions) ,authRoutes)
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
