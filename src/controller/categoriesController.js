@@ -33,3 +33,7 @@ export const getCategories = async (req, res) => {
     return res.status(500).json({ message: "Error al obtener las categorias" });
   }
 };
+
+export const updateCategory = async (req, res) => {}
+
+export const deleteCategory = async (req, res) => {}
