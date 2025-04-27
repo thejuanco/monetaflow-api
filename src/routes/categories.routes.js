@@ -1,10 +1,15 @@
-import { Router } from "express"
+import { Router } from "express";
 
-import { addCategories } from "../controller/categoriesController.js"
-import protectedRoute from "../middleware/protectedRoute.js"
+import {
+  addCategories,
+  getCategories,
+} from "../controller/categoriesController.js";
 
-const router = Router()
+import protectedRoute from "../middleware/protectedRoute.js";
 
-router.post("/create_category", protectedRoute, addCategories)
+const router = Router();
 
-export default router
+router.post("/create_category", protectedRoute, addCategories);
+router.get("/get_categories", protectedRoute, getCategories);
+
+export default router;
