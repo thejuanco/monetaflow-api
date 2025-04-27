@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors'
 import authRoutes from './routes/auth.routes.js'
 import appRoutes from './routes/app.routes.js'
+import categoriesRoutes from "./routes/categories.routes.js"
 import db from './config/db.js'
 
 // Initialize express app and define port number
@@ -19,7 +20,6 @@ const corsOptions = {
     origin: (origin, callback) => {
         if (whiteList.indexOf(origin) !== -1 || !origin) {
             callback(null, true)
-            console.log("CORS habilitado")
         } else {
             callback(new Error('Error de CORS'))
         }
@@ -27,7 +27,8 @@ const corsOptions = {
 }
 
 app.use('/api/auth', cors(corsOptions) ,authRoutes)
-app.use('/api/app/dashboard', cors(corsOptions), appRoutes) 
+app.use('/api/app/dashboard', cors(corsOptions), appRoutes)
+app.use('/api/app/dashboard/categories', cors(corsOptions), categoriesRoutes)
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
