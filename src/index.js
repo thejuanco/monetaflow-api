@@ -1,6 +1,7 @@
 import express from 'express'
+import { db } from './config/database.js'
+import "./models/index.js"
 import budgetRouter from './router/budgetRouter.js'
-import { db } from './database/configDB.js'
 
 const app = express()
 const port = process.env.PORT || 4000
