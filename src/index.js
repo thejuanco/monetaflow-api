@@ -1,7 +1,7 @@
 import express from 'express'
 import { db } from './config/database.js'
 import "./models/index.js"
-import budgetRouter from './router/budgetRouter.js'
+import router from './router/index.js'
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -9,7 +9,9 @@ const port = process.env.PORT || 4000
 app.use(express.json())
 
 //routes
-app.use("/v1/api/Budgets", budgetRouter)
+app.use("/api/v1/", router)
+app.use(notFound)
+app.use(errorHandler)
 
 try {
   await db.authenticate();
